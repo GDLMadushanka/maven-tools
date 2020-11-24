@@ -72,6 +72,7 @@
         <module>humantask-maven-plugin</module>
         <module>wso2-mi-config-mapper</module>
         <module>wso2-general-project-plugin</module>
+        <module>wso2-service-catalog-zip-plugin</module>
     </modules>
     <build>
         <extensions>
@@ -198,6 +199,11 @@
                 <artifactId>org.wso2.ciphertool</artifactId>
                 <version>${org.wso2.ciphertool.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.maven</groupId>
+                <artifactId>maven-project</artifactId>
+                <version>${org.apache.maven-project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <properties>
@@ -281,6 +287,7 @@
         <mi.config.mapper.version>1.0.7</mi.config.mapper.version>
         <net.lingala.zip4j.version>1.3.2</net.lingala.zip4j.version>
         <org.wso2.ciphertool.version>1.1.13</org.wso2.ciphertool.version>
+        <org.apache.maven-project.version>2.2.1</org.apache.maven-project.version>
     </properties>
 
 </project>
