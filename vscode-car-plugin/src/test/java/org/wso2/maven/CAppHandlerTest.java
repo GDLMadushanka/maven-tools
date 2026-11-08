@@ -21,6 +21,9 @@ import org.apache.axiom.om.OMElement;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,6 +31,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.wso2.maven.libraries.CAppDependencyResolver;
+import org.wso2.maven.model.ArtifactDependency;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -111,5 +115,50 @@ public class CAppHandlerTest {
         assertEquals("true", versionedDeploymentElement.getText());
         OMElement dependenciesElement = result.getFirstChildWithName(new javax.xml.namespace.QName("dependencies"));
         assertNotNull(dependenciesElement);
+    }
+
+    @Test
+    public void testProcessArtifacts_StreamSequenceIsPackaged() throws Exception {
+
+        File artifactsFolder = tempFolder.newFolder("artifacts");
+        File streamSequencesFolder = new File(artifactsFolder, Constants.STREAM_SEQUENCES_DIR_NAME);
+        assertTrue(streamSequencesFolder.mkdir());
+
+        File sequenceFile = new File(streamSequencesFolder, "cohort-run.xml");
+        try (FileWriter writer = new FileWriter(sequenceFile)) {
+            writer.write("<streamSequence xmlns=\"http://ws.apache.org/ns/synapse\" name=\"cohort-run\" "
+                    + "sourceIdentity=\"strict\">"
+                    + "<source><file.streamRead name=\"share\" configKey=\"connSmb\">"
+                    + "<path>in/cohort.csv</path></file.streamRead></source>"
+                    + "<sink><file.streamWrite name=\"out\" configKey=\"connSmb\">"
+                    + "<path>out/cohort.csv</path></file.streamWrite></sink>"
+                    + "</streamSequence>");
+        }
+
+        File archiveFolder = tempFolder.newFolder("archive");
+        CARMojo mojo = new MockCARMojo();
+        CAppHandler handler = new CAppHandler("test", mojo);
+
+        List<ArtifactDependency> dependencies = new ArrayList<>();
+        handler.processArtifacts(artifactsFolder, archiveFolder.getAbsolutePath(), dependencies,
+                new ArrayList<ArtifactDependency>(), "1.0.0");
+
+        assertEquals(1, dependencies.size());
+        ArtifactDependency dependency = dependencies.get(0);
+        assertEquals("cohort-run", dependency.getArtifact());
+        assertEquals("1.0.0", dependency.getVersion());
+        assertEquals(Constants.SERVER_ROLE_EI, dependency.getServerRole());
+        assertTrue(dependency.getInclude());
+
+        File artifactDir = new File(archiveFolder, "cohort-run_1.0.0");
+        File artifactXml = new File(artifactDir, Constants.ARTIFACT_XML);
+        assertTrue(artifactXml.exists());
+
+        String artifactXmlContent = new String(Files.readAllBytes(artifactXml.toPath()), StandardCharsets.UTF_8);
+        assertTrue(artifactXmlContent.contains("type=\"" + Constants.STREAM_SEQUENCE_TYPE + "\""));
+        assertTrue(artifactXmlContent.contains("name=\"cohort-run\""));
+        assertTrue(artifactXmlContent.contains("<file>cohort-run-1.0.0.xml</file>"));
+
+        assertTrue(new File(artifactDir, "cohort-run-1.0.0.xml").exists());
     }
 }

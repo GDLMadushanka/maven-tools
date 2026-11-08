@@ -66,6 +66,8 @@ public class CAppHandler extends AbstractXMLDoc {
                 new ArtifactDetails(Constants.MSG_STORES_DIR_NAME, Constants.MESSAGE_STORE_TYPE, Constants.SERVER_ROLE_EI),
                 new ArtifactDetails(Constants.PROXY_SERVICES_DIR_NAME, Constants.PROXY_SERVICE_TYPE, Constants.SERVER_ROLE_EI),
                 new ArtifactDetails(Constants.SEQUENCES_DIR_NAME, Constants.SEQUENCE_TYPE, Constants.SERVER_ROLE_EI),
+                new ArtifactDetails(Constants.STREAM_SEQUENCES_DIR_NAME, Constants.STREAM_SEQUENCE_TYPE,
+                        Constants.SERVER_ROLE_EI),
                 new ArtifactDetails(Constants.TASKS_DIR_NAME, Constants.TASK_TYPE, Constants.SERVER_ROLE_EI),
                 new ArtifactDetails(Constants.TEMPLATES_DIR_NAME, Constants.TEMPLATE_TYPE, Constants.SERVER_ROLE_EI),
                 new ArtifactDetails(Constants.DATASOURCE_DIR_NAME, Constants.DATASOURCE_TYPE, Constants.SERVER_ROLE_DSS),

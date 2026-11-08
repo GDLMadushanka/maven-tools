@@ -32,6 +32,7 @@ public class Constants {
     static final String MSG_STORES_DIR_NAME = "message-stores";
     static final String PROXY_SERVICES_DIR_NAME = "proxy-services";
     static final String SEQUENCES_DIR_NAME = "sequences";
+    static final String STREAM_SEQUENCES_DIR_NAME = "stream-sequences";
     static final String TASKS_DIR_NAME = "tasks";
     static final String TEMPLATES_DIR_NAME = "templates";
     static final String DATASOURCE_DIR_NAME = "data-sources";
@@ -47,6 +48,7 @@ public class Constants {
     static final String MESSAGE_STORE_TYPE = "synapse/message-store";
     static final String PROXY_SERVICE_TYPE = "synapse/proxy-service";
     static final String SEQUENCE_TYPE = "synapse/sequence";
+    static final String STREAM_SEQUENCE_TYPE = "synapse/stream-sequence";
     static final String TASK_TYPE = "synapse/task";
     static final String TEMPLATE_TYPE = "synapse/template";
     static final String DATASOURCE_TYPE = "datasource/datasource";
